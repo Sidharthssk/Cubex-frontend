@@ -1,16 +1,21 @@
-import logo from './logo.svg';
 import './App.css';
 import Navbar from "./components/Navbar";
-import Card from "./components/Card";
 import Querystate from "./context/Querystate";
+import Home from "./components/Home";
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 
 function App() {
   return (
     <>
-        <Querystate>
-      <Navbar />
-        <Card />
-        </Querystate>
+        <Router>
+            <Querystate>
+                <Navbar />
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                </Routes>
+            </Querystate>
+        </Router>
+
     </>
   );
 }
