@@ -9,6 +9,7 @@ const Query = gql`
         events{
             name
             description
+            id
             }
         }
     `;
@@ -24,10 +25,10 @@ function Home() {
 
 
   return (
-    <div className="container flex items-center my-3 mx-auto">
-        {data.events.map((event) => {
+    <div className="container flex my-3 mx-auto h-screen">
+        {data.events.map((event, index) => {
             return (
-                <Card name={event.name} description={event.description} />
+                <Card name={event.name} description={event.description} id={event.id} key={index} />
             );
             })}
     </div>
