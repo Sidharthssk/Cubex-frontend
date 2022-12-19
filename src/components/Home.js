@@ -25,13 +25,17 @@ function Home() {
 
 
   return (
-    <div className="container flex my-3 mx-auto h-screen">
-        {data.events.map((event, index) => {
-            return (
-                <Card name={event.name} description={event.description} id={event.id} key={index} />
-            );
-            })}
-    </div>
+      <section className="overflow-hidden">
+            <div className="container px-5 py-2 mx-auto">
+                <div className="d-flex flex-wrap">
+                    {
+                        data.events.map((event) => {
+                            return <Card key={event.id} event={event} id={event.id}/>
+                        })
+                    }
+                </div>
+            </div>
+      </section>
   );
 }
 

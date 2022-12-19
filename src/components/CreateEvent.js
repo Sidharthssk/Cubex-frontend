@@ -4,6 +4,7 @@ import {gql, request} from "graphql-request";
 import {useMutation} from "react-query";
 import axios from "axios";
 
+
 const Endpoint ="http://localhost:8000/graphql/";
 const mutation = gql`
 mutation CreateEvent($name: String!, $description: String!, $startDate: String!, $endDate: String!) {

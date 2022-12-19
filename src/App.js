@@ -14,7 +14,7 @@ function App() {
                 <Navbar />
                 <Routes>
                     <Route path="/" element={<Home />} />
-                    <Route path="/createEvent" element={<CreateEvent />} />
+                    {/*<Route path="/createEvent" element={<CreateEvent />} />*/}
                     <Route path="/eventdetails/:id" element={<EventDetails />} />
                 </Routes>
             </Querystate>
