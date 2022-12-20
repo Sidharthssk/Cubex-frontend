@@ -24,8 +24,8 @@ const Query = gql`
 const Endpoint = "http://localhost:8000/graphql/";
 
 const scoreBoardQuery = gql`
-    query scoreboard($ageGroupID: ID!, $eventID: ID!){
-    scoreboard(ageGroupID: $ageGroupID, eventID: $eventID){
+    query scoreboard($ageGroupID: ID!, $eventID: ID!, $keyword: String){
+    scoreboard(ageGroupID: $ageGroupID, eventID: $eventID, keyword: $keyword){
         scores {
           duration
           participant {
@@ -43,6 +43,7 @@ function EventDetails(){
     const [ageGroups, setAgeGroups] = useState(null);
     const selectedAgeGroup = useRef(null);
     const [scoreBoard, setScoreBoard] = useState(null);
+    const keyword = useRef(null);
 
     useEffect(() => {
         getEvent();
@@ -60,14 +61,20 @@ function EventDetails(){
     }
 
     const getScoreBoard = async () => {
-        const response = await axios.post(Endpoint, {query: scoreBoardQuery, variables: {ageGroupID: selectedAgeGroup.current, eventID: id}});
+        const response = await axios.post(Endpoint, {query: scoreBoardQuery, variables: {ageGroupID: selectedAgeGroup.current, eventID: id, keyword: keyword.current}});
         setScoreBoard(response.data.data.scoreboard);
     }
 
     const handleAgeGroupChange = (ageGroup) => {
         selectedAgeGroup.current = (ageGroup);
         getScoreBoard();
-        // console.log(selectedAgeGroup.current);
+    }
+
+    const handleKeywordChange = () => {
+        let keywordValue = document.getElementById("keyword").value;
+        console.log(keywordValue);
+        keyword.current = (keywordValue);
+        getScoreBoard();
     }
 
     const renderScoreBoard = () => {
@@ -128,17 +135,22 @@ function EventDetails(){
                         <div className="card">
                             <div className="card-body">
                                 <h3 className="card-title text-capitalize">Scoreboard</h3>
-                                <div className="d-inline-flex align-items-center">
-                                    <p className="card-text fst-italic mx-2 p-0">Select Age Category</p>
-                                    <div className="dropdown">
-                                        <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                            {ageGroups?.find(ageGroup => ageGroup.id === selectedAgeGroup.current)?.name}
-                                        </button>
-                                        <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                            {renderAgeGroups()}
-                                        </ul>
+                                <div className="d-flex justify-content-between">
+                                    <div className="d-inline-flex align-items-center">
+                                        <p className="card-text fst-italic mx-2 p-0">Select Age Category</p>
+                                        <div className="dropdown">
+                                            <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                {ageGroups?.find(ageGroup => ageGroup.id === selectedAgeGroup.current)?.name}
+                                            </button>
+                                            <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                {renderAgeGroups()}
+                                            </ul>
+                                        </div>
                                     </div>
+                                    <input className="form-control me-2 w-25" id="keyword" type="search" placeholder="Search"
+                                           aria-label="Search" onInput={handleKeywordChange} autoComplete="off"/>
                                 </div>
+
 
 
                                 <div className="card my-3">
