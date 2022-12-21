@@ -1,12 +1,13 @@
 import React from "react";
 import {Link} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 
 function Navbar(){
     return(
         <>
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
                 <div className="container-fluid">
-                    <Link className="navbar-brand" to="/">Navbar</Link>
+                    <NavLink activeStyle={{ color:'#5754a8' }} className="navbar-brand" to="/">Navbar</NavLink>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
                             data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
                             aria-label="Toggle navigation">
@@ -15,13 +16,13 @@ function Navbar(){
                     <div className="collapse navbar-collapse" id="navbarNavDropdown">
                         <ul className="navbar-nav">
                             <li className="nav-item">
-                                <Link className="nav-link active" aria-current="page" to="/">Home</Link>
+                                <NavLink activeStyle={{ color:'#5754a8' }} className="nav-link" aria-current="page" exact to="/">Home</NavLink>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="#">Features</a>
+                                <NavLink activeStyle={{ color:'#5754a8' }} className="nav-link" to="/createEvent">Create Event</NavLink>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="#">Pricing</a>
+                                <NavLink className="nav-link" to="/participants">Participants</NavLink>
                             </li>
                             <li className="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"

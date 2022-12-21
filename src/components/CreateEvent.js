@@ -1,8 +1,11 @@
 import React, {useState} from 'react';
-import Datepicker from "react-tailwindcss-datepicker";
 import {gql, request} from "graphql-request";
 import {useMutation} from "react-query";
 import axios from "axios";
+import {DatePicker} from "antd";
+import moment from "moment";
+import {useNavigate} from "react-router-dom";
+const {RangePicker: DateRangePicker} = DatePicker;
 
 
 const Endpoint ="http://localhost:8000/graphql/";
@@ -22,22 +25,20 @@ mutation CreateEvent($name: String!, $description: String!, $startDate: String!,
 }`;
 function CreateEvent() {
 
-    const [date, setDate] = useState({
-        startDate: null,
-        endDate:null,
-    });
+    const [date, setDate] = useState([]);
+    const navigate = useNavigate();
 
     const handleValueChange = (value) => {
-        setDate(value);
+        const value1 = moment(value[0].$d).format("YYYY-MM-DD");
+        const value2 = moment(value[1].$d).format("YYYY-MM-DD");
+        setDate([value1, value2]);
     }
 
     const queryVariables = {
-
             name: document.getElementById("event_name")?.value,
             description: document.getElementById("event_description")?.value,
-            startDate: date.startDate,
-            endDate: date.endDate,
-
+            startDate: date[0],
+            endDate: date[1],
     }
 
     const handleForm = (e) => {
@@ -45,15 +46,16 @@ function CreateEvent() {
         mutationFunction.mutate()
     }
 
-    const mutationFunction = useMutation(async () => request(
+    const mutationFunction = useMutation(()=> request(
         Endpoint,
         mutation,
-        queryVariables,
+        queryVariables
     ), {
-        onSuccess: ({data}) => {
-            console.log(data.data, data.error)
+        onSuccess: (data) => {
+            navigate("/")
         }
-    });
+    })
+
 
     //
     // const mutationFunction = useMutation(async () => {
@@ -65,45 +67,30 @@ function CreateEvent() {
 
 
     return (
+        <>
+            <div className="container my-5 mx-auto p-5 event_details border">
+                <form onSubmit={handleForm}>
+                    <div className="relative z-0 mb-5 w-100 input-group">
+                        <label htmlFor="event_name" className="d-block " style={{color: "white"}}>Event Name</label>
+                        <input type="text" name="event_name" id="event_name" className="d-block py-2 px-0 w-100 fs-5 no-outline" placeholder=" " required
+                               style={{color: "white"}}/>
+                    </div>
+                    <div className="relative z-0 mb-3 w-100 input-group">
+                        <label htmlFor="event_name" className="d-block " style={{color: "white"}}>Event Description</label>
+                        <textarea name="event_description" id="event_description" className="d-block p-3 w-100 fs-5 no-outline my-3" placeholder=" " required
+                               style={{color: "white"}} />
+                    </div>
+                    <div className="relative z-0 mb-3 w-100 input-group">
+                        <label htmlFor="event_name" className="d-block " style={{color: "white"}}>Start Date</label>
+                        <div className="container my-3 px-0">
+                            <DateRangePicker onChange={handleValueChange} />
+                        </div>
+                    </div>
 
-        <div className="container mx-auto my-12 w-3/5 border-4 p-8 rounded-lg">
-            <form onSubmit={handleForm}>
-                <div className="relative z-0 mb-6 w-full group">
-                    <input type="text" name="event_name" id="event_name"
-                           className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                           placeholder=" " required/>
-                    <label htmlFor="event_name"
-                           className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Event name</label>
-                </div>
-
-                <div>
-                    <label htmlFor="event_description" className="block mb-2 text-sm font-medium text-gray-500 dark:text-white">Event Description</label>
-                    <textarea id="event_description" rows="4" name="event_description"
-                              className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                              placeholder="Enter the event description here"></textarea>
-                </div>
-                <hr className="my-6 border-b-2 border-gray-300 dark:border-gray-300"/>
-
-                <div id="datepickerId">
-                    <label htmlFor="datePicker" className="block mb-2 text-sm font-medium text-gray-500 dark:text-white">Start Date and End Date</label>
-                    <Datepicker id="datePicker" value={date} onChange={handleValueChange} primaryColor={"indigo"} separator={"to"} showShortcuts={true}/>
-                </div>
-                <hr className="my-6 border-b-2 border-gray-300 dark:border-gray-300"/>
-
-                <div className="inline-flex w-full justify-end">
-                    <button type="button"
-                            className="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Cancel
-                    </button>
-
-                    <button type="submit"
-                            className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Create Event
-                    </button>
-
-
-                </div>
-
-            </form>
-        </div>
+                    <button type="submit" className="btn btn-primary" >Create Event</button>
+                </form>
+            </div>
+        </>
     );
 }
 

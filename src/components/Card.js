@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 function Card(props){
 
     const formatter = (description) =>{
-        return description.substring(0, 100) + "...";
+        return description.length > 100 ? description.substring(0, 100) + "..." : description;
     }
 
     return (

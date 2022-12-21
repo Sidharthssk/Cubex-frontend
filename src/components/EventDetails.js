@@ -54,7 +54,7 @@ function EventDetails(){
             (response) => {
                 setEvent(response.data.data.event);
                 setAgeGroups(response.data.data.AgeGroups);
-                selectedAgeGroup.current = response.data.data.AgeGroups[0].id;
+                selectedAgeGroup.current = response.data.data.AgeGroups[0]?.id;
                 getScoreBoard()
             }
         );
@@ -83,7 +83,7 @@ function EventDetails(){
                 return (
                     <tr key={index}>
                         <th scope="row">{score.rank}</th>
-                        <td>{score.participant.name}</td>
+                        <td className="text-capitalize">{score.participant.name}</td>
                         <td>{score.duration}</td>
                     </tr>
                 )

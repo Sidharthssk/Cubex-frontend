@@ -40,3 +40,28 @@ body{
     transform: rotate(360deg);
   }
 }
+
+.event_details input {
+  border-top-style: hidden;
+  border-right-style: hidden;
+  border-left-style: hidden;
+  border-bottom-style: groove;
+  border-bottom-color: white;
+  background-color: rgb(49,52,66);
+}
+
+.event_details textarea{
+    border-top-style: groove;
+    border-right-style: groove;
+    border-left-style: groove;
+    border-bottom-style: groove;
+    border-bottom-color: white;
+    border-left-color: white;
+    border-right-color: white;
+    border-top-color: white;
+    background-color: rgb(49,52,66);
+}
+
+.no-outline:focus {
+  outline: none;
+}
