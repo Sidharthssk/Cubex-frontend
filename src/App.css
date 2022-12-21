@@ -65,3 +65,7 @@ body{
 .no-outline:focus {
   outline: none;
 }
+
+.participant-table tr:hover {
+    cursor: pointer;
+}
