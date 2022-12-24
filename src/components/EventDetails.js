@@ -72,7 +72,6 @@ function EventDetails(){
 
     const handleKeywordChange = () => {
         let keywordValue = document.getElementById("keyword").value;
-        console.log(keywordValue);
         keyword.current = (keywordValue);
         getScoreBoard();
     }
