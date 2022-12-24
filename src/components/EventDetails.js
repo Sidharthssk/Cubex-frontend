@@ -4,6 +4,8 @@ import {useParams} from "react-router-dom";
 import {gql} from "graphql-request";
 import Table from "./Table";
 import moment from "moment";
+import {useMutation} from "react-query";
+import {request} from "graphql-request";
 
 const Query = gql`
     query event($id: ID!) {
@@ -36,6 +38,22 @@ const scoreBoardQuery = gql`
     }
 }`;
 
+const participantsQuery = gql`
+    query participants($eventID: ID){
+        participants(filters: {eventID: $eventID}){
+            participants{
+                name
+                id
+            }
+        }
+    }`;
+
+const removeParticipantQuery = gql`
+    mutation removeParticipantFromCategory($eventID: ID!, $participantID: ID!){
+        removeParticipantFromCategory(eventID: $eventID, participantID: $participantID)
+    }
+`
+
 function EventDetails(){
     const {id} = useParams();
 
@@ -43,10 +61,12 @@ function EventDetails(){
     const [ageGroups, setAgeGroups] = useState(null);
     const selectedAgeGroup = useRef(null);
     const [scoreBoard, setScoreBoard] = useState(null);
+    const [participants, setParticipants] = useState(null);
     const keyword = useRef(null);
 
     useEffect(() => {
         getEvent();
+        getParticipants();
     }, []);
 
     const getEvent = async () => {
@@ -58,6 +78,14 @@ function EventDetails(){
                 getScoreBoard()
             }
         );
+    }
+
+    const getParticipants = async () =>{
+        const response = await axios.post(Endpoint, {query: participantsQuery, variables: {eventID: id}}).then(
+            (response) => {
+                setParticipants(response.data.data.participants.participants);
+            }
+        )
     }
 
     const getScoreBoard = async () => {
@@ -113,6 +141,9 @@ function EventDetails(){
                         <li className="nav-item">
                             <button className="nav-link" data-bs-toggle="tab" data-bs-target="#scoreboard">Scoreboard</button>
                         </li>
+                        <li className="nav-item">
+                            <button className="nav-link" data-bs-toggle="tab" data-bs-target="#participants">Participants</button>
+                        </li>
                     </ul>
                 </div>
                 <div className="tab-content">
@@ -154,7 +185,7 @@ function EventDetails(){
 
                                 <div className="card my-3">
                                     <div className="card-body ">
-                                        <table className="table table-dark table-striped ">
+                                        <table className="table table-striped border border-secondary">
                                             <thead>
                                             <tr>
                                                 <th scope="col">Position</th>
@@ -169,6 +200,36 @@ function EventDetails(){
                                     </div>
                                 </div>
 
+                            </div>
+                        </div>
+                    </div>
+                    <div className="tab-pane fade show" id="participants">
+                        <div className="card">
+                            <div className="card-body">
+                                <div className="container ">
+                                    <table className="table table-striped border border-secondary">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Participant Name</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {
+                                                participants.map((participant, index) => {
+                                                    return (
+                                                        <tr key={participant.id}>
+                                                            <th scope="row">{index+1}</th>
+                                                            <td className="text-capitalize w-50">{participant.name}</td>
+                                                            <td><button type="button" className="btn-close"></button></td>
+                                                        </tr>
+                                                    )
+                                                })
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
