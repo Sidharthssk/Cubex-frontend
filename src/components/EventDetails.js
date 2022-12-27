@@ -4,8 +4,7 @@ import {useParams} from "react-router-dom";
 import {gql} from "graphql-request";
 import Table from "./Table";
 import moment from "moment";
-import {useMutation} from "react-query";
-import {request} from "graphql-request";
+import Modal from "./Modal";
 
 const Query = gql`
     query event($id: ID!) {
@@ -48,12 +47,6 @@ const participantsQuery = gql`
         }
     }`;
 
-const removeParticipantQuery = gql`
-    mutation removeParticipantFromCategory($eventID: ID!, $participantID: ID!){
-        removeParticipantFromCategory(eventID: $eventID, participantID: $participantID)
-    }
-`
-
 function EventDetails(){
     const {id} = useParams();
 
@@ -63,6 +56,8 @@ function EventDetails(){
     const [scoreBoard, setScoreBoard] = useState(null);
     const [participants, setParticipants] = useState(null);
     const keyword = useRef(null);
+    const [show, setShow] = useState(false);
+    const selectedParticipant = useRef(null);
 
     useEffect(() => {
         getEvent();
@@ -129,7 +124,10 @@ function EventDetails(){
     }
 
     return (
-        <>
+        <div className="p-3">
+            {
+                show && <Modal name={selectedParticipant.current.name} id={selectedParticipant.current.id} func={getParticipants}  show={setShow}/>
+            }
             <div className="container mx-auto my-5 border p-3 rounded">
                 <div className="navbar">
                     <ul className="nav nav-tabs flex">
@@ -217,12 +215,19 @@ function EventDetails(){
                                         </thead>
                                         <tbody>
                                             {
-                                                participants.map((participant, index) => {
+                                                participants?.map((participant, index) => {
                                                     return (
                                                         <tr key={participant.id}>
                                                             <th scope="row">{index+1}</th>
                                                             <td className="text-capitalize w-50">{participant.name}</td>
-                                                            <td><button type="button" className="btn-close"></button></td>
+                                                            <td><button type="button" className="btn-close"  onClick={() => {
+                                                                setShow(true);
+                                                                selectedParticipant.current = {
+                                                                    "name" : participant.name,
+                                                                    "id" : participant.id
+                                                                };
+                                                                console.log(selectedParticipant.current)
+                                                            }}></button></td>
                                                         </tr>
                                                     )
                                                 })
@@ -235,7 +240,7 @@ function EventDetails(){
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 
