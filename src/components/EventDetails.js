@@ -47,6 +47,25 @@ const participantsQuery = gql`
         }
     }`;
 
+const createParticipant = gql`
+    mutation createParticipant($name: String!, $phone: String!, $email: String!, $gender: String!, $dob: String!, $city: String!, $state: String!, $country: String!, $ageGroupID: ID!){
+        createParticipant(name: $name, phone: $phone, email: $email, gender: $gender, dob: $dob, city: $city, state: $state, country: $country, ageGroup: $ageGroupID){
+            id
+        }
+    }`;
+
+const registerParticipant = gql`
+    mutation registerParticipantForCategory($participantID: ID!, $eventID: ID!){
+        registerParticipantForCategory(participantID: $participantID, eventID: $eventID)
+    }`;
+
+const recordScore = gql`
+    mutation recordScore($participantID: ID!, $eventID: ID!, $duration: String!){
+        recordScore(scoreboard: {participantID: $participantID, eventID: $eventID, duration: $duration}){
+            id
+        }
+    }`;
+
 function EventDetails(){
     const {id} = useParams();
 
@@ -123,6 +142,52 @@ function EventDetails(){
         }
     }
 
+    const handleSubmission = async (e) => {
+        e.preventDefault();
+        const name = document.getElementById("name")?.value;
+        const phone = document.getElementById("contact")?.value;
+        const email = document.getElementById("email")?.value;
+        const dob = document.getElementById("dob")?.value;
+        const gender = document.getElementById("gender")?.options[document.getElementById("gender")?.selectedIndex].text;
+        const city = document.getElementById("city")?.value;
+        const state = document.getElementById("state")?.value;
+        const country = document.getElementById("country")?.value;
+        const selectedAgeGroup = document.getElementById("ageGroup")?.value;
+
+        const ageGroupDetails = ageGroups.find((ageGroup) => ageGroup.id === selectedAgeGroup);
+        const age = moment().diff(dob, 'years');
+
+        if(age >= ageGroupDetails.minAge && age <= ageGroupDetails.maxAge){
+            await axios.post(Endpoint, {query: createParticipant, variables: {name: name, phone: phone, email: email, gender: gender, dob: dob, city: city, state: state, country: country, ageGroupID: selectedAgeGroup}}).then(
+                (response) => {
+                    if(response.data.data.createParticipant){
+                        const participantID = response.data.data.createParticipant.id;
+                        axios.post(Endpoint, {query: registerParticipant, variables: {participantID: participantID, eventID: id}}).then(
+                            (response) => {
+                                if(response.data.data.registerParticipantForCategory){
+                                    getParticipants();
+                                    alert("Participant Registered Successfully");
+                                }
+                            })
+                    }
+                });
+        }else{
+            alert("Participant Age is not in the age group");
+        }
+    }
+    
+    const handleScoreSubmission = async (e) => {
+        let duration = document.getElementById("score")?.value;
+        const participantID = document.getElementById("participant")?.value;
+        await axios.post(Endpoint, {query: recordScore, variables: {participantID: participantID, eventID: id, duration: duration}}).then(
+            (response) => {
+                if(response.data.data.recordScore){
+                    getScoreBoard();
+                    alert("Score Recorded Successfully");
+                }
+            });
+    }
+
     return (
         <div className="p-3">
             {
@@ -137,10 +202,16 @@ function EventDetails(){
                             </button>
                         </li>
                         <li className="nav-item">
-                            <button className="nav-link" data-bs-toggle="tab" data-bs-target="#scoreboard">Scoreboard</button>
+                            <button className="nav-link" data-bs-toggle="tab" data-bs-target="#scoreboard" >Scoreboard</button>
                         </li>
                         <li className="nav-item">
                             <button className="nav-link" data-bs-toggle="tab" data-bs-target="#participants">Participants</button>
+                        </li>
+                        <li className="nav-item">
+                            <button className="nav-link" data-bs-toggle="tab" data-bs-target="#add-participants">Add Participants</button>
+                        </li>
+                        <li className="nav-item">
+                            <button className="nav-link" data-bs-toggle="tab" data-bs-target="#add-score">Enter Score</button>
                         </li>
                     </ul>
                 </div>
@@ -235,6 +306,112 @@ function EventDetails(){
                                         </tbody>
                                     </table>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="tab-pane fade show" id="add-participants">
+                        <div className="card">
+                            <div className="card-body">
+                                <form className="p-3 border-bottom border-secondary" id="create-participant-form" onSubmit={handleSubmission}>
+                                    <div className="row">
+                                        <div className="col-6">
+                                            <div className="mb-3">
+                                                <label htmlFor="name" className="form-label">Name</label>
+                                                <input type="text" className="form-control" id="name" placeholder="Name" autoComplete="off"/>
+                                            </div>
+                                        </div>
+                                        <div className="col-6">
+                                            <div className="mb-3">
+                                                <label htmlFor="email" className="form-label">Email</label>
+                                                <input type="email" className="form-control" id="email" placeholder="Email" autoComplete="off"/>
+                                            </div>
+                                        </div>
+                                        <div className="col-6">
+                                            <div className="mb-3">
+                                                <label htmlFor="contact" className="form-label">Contact</label>
+                                                <input type="text" className="form-control" id="contact" placeholder="Contact" autoComplete="off"/>
+                                            </div>
+                                        </div>
+                                        <div className="col-6">
+                                            <div className="mb-3">
+                                                <label htmlFor="dob" className="form-label">Date of Birth</label>
+                                                <input type="date" className="form-control" id="dob" placeholder="Date of Birth"/>
+                                            </div>
+                                        </div>
+                                        <div className="col-6">
+                                            <div className="mb-3">
+                                                <label htmlFor="gender" className="form-label">Gender</label>
+                                                    <select name="gender" id="gender" className="selectVal mx-2">
+                                                        <option value="male">Male</option>
+                                                        <option value="female">Female</option>
+                                                        <option value="other">Other</option>
+                                                    </select>
+                                            </div>
+                                            <div className="mb-3">
+                                                <label htmlFor="ageGroup" className="form-label">Age Group</label>
+                                                <select name="ageGroup" id="ageGroup" className="selectVal mx-2">
+                                                    {
+                                                        ageGroups?.map(ageGroup => {
+                                                            return (
+                                                                <option key={ageGroup.id} value={ageGroup.id}>{ageGroup.name}</option>
+                                                            )
+                                                        })
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div className="col-6">
+                                            <div className="mb-3">
+                                                <label htmlFor="City" className="form-label">City</label>
+                                                <input type="text" className="form-control" id="city" placeholder="City" autoComplete="off"/>
+                                            </div>
+                                        </div>
+                                        <div className="col-6">
+                                            <div className="mb-3">
+                                                <label htmlFor="state" className="form-label">State</label>
+                                                <input type="text" className="form-control" id="state" placeholder="State" autoComplete="off"/>
+                                            </div>
+                                        </div>
+                                        <div className="col-6">
+                                            <div className="mb-3">
+                                                <label htmlFor="country" className="form-label">Country</label>
+                                                <input type="text" className="form-control" id="country" placeholder="Country" autoComplete="off"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" className="btn btn-primary">Submit</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="tab-pane fade show" id="add-score">
+                        <div className="card">
+                            <div className="card-body">
+                                <form className="p-3" id="create-score-form" onSubmit={handleScoreSubmission}>
+                                    <div className="row">
+                                        <div className="col-6 d-flex align-items-center">
+                                            <div className="mb-3 fs-4">
+                                                <label htmlFor="participant" className="form-label">Select participant : </label>
+                                                <select name="participant" id="participant" className="selectVal mx-2">
+                                                    {
+                                                        participants?.map(participant => {
+                                                            return (
+                                                                <option key={participant.id} value={participant.id}>{participant.name}</option>
+                                                            )
+                                                        })
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div className="col-6">
+                                            <div className="mb-3 fs-4">
+                                                <label htmlFor="score" className="form-label">Score : </label>
+                                                <input type="text" className="form-control" id="score" placeholder="00:00:00" autoComplete="off"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" className="btn btn-primary">Submit Score</button>
+                                </form>
                             </div>
                         </div>
                     </div>

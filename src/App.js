@@ -6,6 +6,7 @@ import CreateEvent from "./components/CreateEvent";
 import EventDetails from "./components/EventDetails";
 import Participants from "./components/Participants";
 import ParticipantDetails from "./components/ParticipantDetails";
+import Login from "./components/Login";
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
                     <Route path="/eventdetails/:id" element={<EventDetails />} />
                     <Route path="/participants" element={<Participants />} />
                     <Route path="/participantdetails/:id" element={<ParticipantDetails />} />
+                    <Route path="/login" element={<Login />} />
                 </Routes>
             </Querystate>
         </Router>

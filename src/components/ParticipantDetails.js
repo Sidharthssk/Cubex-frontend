@@ -51,14 +51,25 @@ function ParticipantDetails() {
                     <p className="fs-4"><span className="fst-italic fw-light">Email : </span>{participant.email}</p>
                     <p className="fs-4"><span className="fst-italic fw-light">Contact :</span> {participant.contact}</p>
                     <p className="fs-4 text-capitalize"><span className="fst-italic fw-light">Age Group :</span> {participant.ageGroup.name}</p>
-                    <p className="fs-4"><span className="fst-italic fw-light">Event :</span></p>
-                    <ul className="d-inline-flex flex-column">
-                        {
-                            participant.events.map((event) => {
-                                return <Link key={event.id} style={{textDecoration: "none", color: "black"}} to={`/eventDetails/${event.id}`}><li className="fs-4 mx-5 text-capitalize">{event.name}</li></Link>
-                            })
-                        }
-                    </ul>
+                    {
+                        participant.events.length > 0 ? (
+                            <div>
+                                <p className="fs-4"><span className="fst-italic fw-light">Event :</span></p>
+                                <ul className="d-inline-flex flex-column">
+                                    {
+                                        participant.events.map((event) => {
+                                            return <Link key={event.id} style={{textDecoration: "none", color: "black"}} to={`/eventDetails/${event.id}`}><li className="fs-4 mx-5 text-capitalize">{event.name}</li></Link>
+                                        })
+                                    }
+                                </ul>
+                            </div>
+                        ) : (
+                            <div>
+                                <p className="fs-4 text-capitalize"><span className="fst-italic fw-light">Events :</span> No Events</p>
+                            </div>
+                        )
+                    }
+
                 </div>
             )
         }
