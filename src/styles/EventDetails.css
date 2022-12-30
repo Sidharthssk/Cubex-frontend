@@ -1,0 +1,9 @@
+.event_details_navbar li button{
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.event_details_navbar li button:hover{
+    color: #61dafb;
+}

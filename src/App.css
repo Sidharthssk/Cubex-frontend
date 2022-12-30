@@ -39,55 +39,6 @@ body{
   }
 }
 
-.event_details input {
-  border-top-style: hidden;
-  border-right-style: hidden;
-  border-left-style: hidden;
-  border-bottom-style: groove;
-  border-bottom-color: white;
-    background : transparent;
-}
-
-.event_details textarea{
-    border-top-style: groove;
-    border-right-style: groove;
-    border-left-style: groove;
-    border-bottom-style: groove;
-    border-bottom-color: white;
-    border-left-color: white;
-    border-right-color: white;
-    border-top-color: white;
-    background : transparent;
-}
-
-.no-outline:focus {
-  outline: none;
-}
-
 .participant-table tr:hover {
     cursor: pointer;
-}
-
-.videoTag {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    position: fixed;
-    left: 0;
-}
-
-.event_details_navbar li button{
-    color: white;
-    font-size: 20px;
-    font-weight: bold;
-}
-
-.event_details_navbar li button:hover{
-    color: #61dafb;
-}
-
-.event_details{
-    background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 25px;
-    border: 1px solid white;
 }

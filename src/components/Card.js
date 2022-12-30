@@ -1,5 +1,6 @@
 import React from "react";
 import {Link} from "react-router-dom";
+import "../styles/Card.css";
 
 function Card(props){
 
@@ -10,7 +11,7 @@ function Card(props){
     return (
 
             <>
-                <Link className="card mx-2 my-3 shadow-sm bg-white" to={`/eventdetails/${props.id}`} style={{width: "18rem", textDecoration: 'none', color: "black"}}>
+                <Link className="card mx-2 my-3 shadow-sm bg-white event_card" to={`/eventdetails/${props.id}`}>
                     <div className="card-body">
                         <h3 className="card-title text-capitalize">{props.event.name}</h3>
                         <p className="card-text text-muted">{props.event.description && formatter(props.event.description)}</p>

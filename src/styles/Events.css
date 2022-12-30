@@ -1,0 +1,14 @@
+.events hr{
+    background: white;
+    margin: 0;
+    height: 3px;
+    opacity: 0.5;
+}
+
+.events .events_header h3{
+    color: white;
+}
+
+.events p{
+    color: white;
+}

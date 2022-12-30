@@ -1,11 +1,12 @@
 import React from "react";
 import {Link} from "react-router-dom";
 import {NavLink} from "react-router-dom";
+import "../styles/Navbar.css";
 
 function Navbar(){
     return(
         <>
-            <nav className="navbar navbar-expand-lg navbar-dark bg-dark" style={{position: "sticky", top: "0"}}>
+            <nav className="navbar main_navbar navbar-expand-lg">
                 <div className="container-fluid">
                     <NavLink activeStyle={{ color:'#5754a8' }} className="navbar-brand" to="/">Cubex</NavLink>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse"

@@ -5,6 +5,7 @@ import {gql} from "graphql-request";
 import Table from "./Table";
 import moment from "moment";
 import Modal from "./Modal";
+import "../styles/EventDetails.css";
 
 const Query = gql`
     query event($id: ID!) {

@@ -2,6 +2,7 @@ import React, {useEffect} from "react";
 import {gql} from "graphql-request";
 import axios from "axios";
 import {useParams, useNavigate} from "react-router-dom";
+import "../styles/Modal.css";
 
 const removeParticipantQuery = gql`
     mutation removeParticipantFromCategory($eventID: ID!, $participantID: ID!){
@@ -24,7 +25,7 @@ function Modal(props){
     }
 
     return(
-        <div className="position-relative" style={{zIndex: "1"}}>
+        <div className="position-relative confirmation_modal" >
             <div className="position-absolute top-0 end-0" id="confirmationModal" tabIndex="-1" aria-labelledby="exampleModalLabel" >
                 <div className="modal-dialog">
                     <div className="modal-content">

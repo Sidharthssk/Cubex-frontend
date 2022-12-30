@@ -2,6 +2,7 @@ import React, {useRef, useState} from "react";
 import {request, gql} from "graphql-request";
 import {useQuery} from "react-query";
 import Card from "./Card";
+import "../styles/Events.css";
 
 const Endpoint ="http://localhost:8000/graphql/";
 const Query = gql`
@@ -34,13 +35,13 @@ function Events() {
     if(error) return <p>{error.message}</p>;
 
     return (
-        <div className="container mt-3">
+        <div className="container mt-3 events">
             <section className="overflow-hidden">
                 <div className="container px-5 py-2 mx-auto">
-                    <div className="d-flex flex-wrap flex-column">
-                        <div className="my-3">
-                            <h3 style={{color: "white"}} className="fst-italic fs-1">Past Events</h3>
-                            <hr style={{background: "white", margin: "0", height: "3px", opacity: "0.5"}}/>
+                    <div className="d-flex flex-wrap flex-column past_events">
+                        <div className="my-3 events_header">
+                            <h3 className="fst-italic fs-1">Past Events</h3>
+                            <hr />
                         </div>
                         <div className="d-flex flex-wrap">
                             {
@@ -52,14 +53,14 @@ function Events() {
                                 })
                             }
                             {
-                                pastEvents.current === 0 && <p style={{color: "white"}} className="fs-3">No Past Events</p>
+                                pastEvents.current === 0 && <p className="fs-3">No Past Events</p>
                             }
                         </div>
                     </div>
                     <div className="d-flex flex-wrap flex-column">
-                        <div className="my-3">
-                            <h3 style={{color: "white"}} className="fst-italic fs-1">Ongoing Events</h3>
-                            <hr style={{background: "white", margin: "0", height: "3px", opacity: "0.5"}}/>
+                        <div className="my-3 events_header">
+                            <h3 className="fst-italic fs-1">Ongoing Events</h3>
+                            <hr />
                         </div>
                         <div className="d-flex flex-wrap">
                             {
@@ -71,14 +72,14 @@ function Events() {
                                 })
                             }
                             {
-                                onGoingEvents.current === 0 && <p style={{color: "white"}} className="fs-3">No Ongoing Events....</p>
+                                onGoingEvents.current === 0 && <p className="fs-3">No Ongoing Events....</p>
                             }
                         </div>
                     </div>
                     <div className="d-flex flex-wrap flex-column">
-                        <div className="my-3">
-                            <h3 style={{color: "white"}} className="fst-italic fs-1">Upcoming Events</h3>
-                            <hr style={{background: "white", margin: "0", height: "3px", opacity: "0.5"}}/>
+                        <div className="my-3 events_header">
+                            <h3 className="fst-italic fs-1">Upcoming Events</h3>
+                            <hr />
                         </div>
                         <div className="d-flex flex-wrap">
                             {
@@ -90,7 +91,7 @@ function Events() {
                                 })
                             }
                             {
-                                upcomingEvents.current === 0 && <p style={{color: "white"}} className="fs-3">No Upcoming Events....</p>
+                                upcomingEvents.current === 0 && <p className="fs-3">No Upcoming Events....</p>
                             }
                         </div>
                     </div>

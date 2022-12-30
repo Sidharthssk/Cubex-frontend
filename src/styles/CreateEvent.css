@@ -1,0 +1,43 @@
+.create_event{
+    margin-top: 5%;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 25px;
+    border: 1px solid white;
+}
+
+.create_event label{
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.create_event input{
+    color: white;
+    border-top-style: hidden;
+    border-right-style: hidden;
+    border-left-style: hidden;
+    border-bottom-style: groove;
+    border-bottom-color: white;
+    background : transparent;
+}
+
+.create_event input:focus{
+    outline: none;
+}
+
+.create_event textarea{
+    color: white;
+    border-top-style: groove;
+    border-right-style: groove;
+    border-left-style: groove;
+    border-bottom-style: groove;
+    border-bottom-color: white;
+    border-left-color: white;
+    border-right-color: white;
+    border-top-color: white;
+    background : transparent;
+}
+
+.create_event textarea:focus{
+    outline: none;
+}

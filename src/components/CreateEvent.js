@@ -5,6 +5,7 @@ import axios from "axios";
 import {DatePicker} from "antd";
 import moment from "moment";
 import {useNavigate} from "react-router-dom";
+import "../styles/CreateEvent.css";
 const {RangePicker: DateRangePicker} = DatePicker;
 
 
@@ -58,20 +59,19 @@ function CreateEvent() {
 
     return (
         <>
-            <div className="container mx-auto p-5 event_details" style={{marginTop: "5%"}}>
+            <div className="container mx-auto p-5 create_event">
                 <form onSubmit={handleForm}>
                     <div className="relative z-0 mb-5 w-100 input-group">
-                        <label htmlFor="event_name" className="d-block " style={{color: "white"}}>Event Name</label>
-                        <input type="text" name="event_name" id="event_name" className="d-block py-2 px-0 w-100 fs-5 no-outline" placeholder=" " required
-                               style={{color: "white"}} autoComplete="off"/>
+                        <label htmlFor="event_name" className="d-block " >Event Name</label>
+                        <input type="text" name="event_name" id="event_name" className="d-block py-2 px-0 w-100 fs-5" placeholder=" " required
+                               autoComplete="off"/>
                     </div>
                     <div className="relative z-0 mb-3 w-100 input-group">
-                        <label htmlFor="event_name" className="d-block " style={{color: "white"}}>Event Description</label>
-                        <textarea name="event_description" id="event_description" className="d-block p-3 w-100 fs-5 no-outline my-3" placeholder=" " required
-                               style={{color: "white"}} />
+                        <label htmlFor="event_name" className="d-block " >Event Description</label>
+                        <textarea name="event_description" id="event_description" className="d-block p-3 w-100 fs-5 my-3" placeholder=" " required/>
                     </div>
                     <div className="relative z-0 mb-3 w-100 input-group">
-                        <label htmlFor="event_name" className="d-block " style={{color: "white"}}>Start Date</label>
+                        <label htmlFor="event_name" className="d-block " >Start Date & End Date</label>
                         <div className="container my-3 px-0">
                             <DateRangePicker onChange={handleValueChange} />
                         </div>
