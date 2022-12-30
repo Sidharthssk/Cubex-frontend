@@ -48,6 +48,18 @@ const participantsQuery = gql`
         }
     }`;
 
+const AllParticipantsQuery = gql`
+    query participants{
+        participants{
+            participants {
+              name
+              id
+              contact
+              email
+            }
+        }
+  }`;
+
 const createParticipant = gql`
     mutation createParticipant($name: String!, $phone: String!, $email: String!, $gender: String!, $dob: String!, $city: String!, $state: String!, $country: String!, $ageGroupID: ID!){
         createParticipant(name: $name, phone: $phone, email: $email, gender: $gender, dob: $dob, city: $city, state: $state, country: $country, ageGroup: $ageGroupID){
@@ -75,6 +87,7 @@ function EventDetails(){
     const selectedAgeGroup = useRef(null);
     const [scoreBoard, setScoreBoard] = useState(null);
     const [participants, setParticipants] = useState(null);
+    const [allParticipants, setAllParticipants] = useState(null);
     const keyword = useRef(null);
     const [show, setShow] = useState(false);
     const selectedParticipant = useRef(null);
@@ -82,6 +95,7 @@ function EventDetails(){
     useEffect(() => {
         getEvent();
         getParticipants();
+        getAllParticipants();
     }, []);
 
     const getEvent = async () => {
@@ -99,6 +113,14 @@ function EventDetails(){
         const response = await axios.post(Endpoint, {query: participantsQuery, variables: {eventID: id}}).then(
             (response) => {
                 setParticipants(response.data.data.participants.participants);
+            }
+        )
+    }
+
+    const getAllParticipants = async () =>{
+        const response = await axios.post(Endpoint, {query: AllParticipantsQuery}).then(
+            (response) => {
+                setAllParticipants(response.data.data.participants.participants);
             }
         )
     }
@@ -132,6 +154,39 @@ function EventDetails(){
             })
         }
     }
+
+    const renderAllParticipants = () => {
+        if(allParticipants){
+            let i = 1;
+            return allParticipants.map((participant, index) => {
+                if(participants){
+                    if(participants.find(p => p.id === participant.id)==null){
+                        return (
+                            <tr key={index}>
+                                <th scope="row">{i++}</th>
+                                <td className="text-capitalize">{participant.name}</td>
+                                <td>{participant.email}</td>
+                                <td><button className="btn btn-primary" onClick={()=>{
+                                    handleRegister(participant);
+                                }}>Register</button></td>
+                            </tr>
+                        )
+                    }
+                }
+            })
+        }
+
+    }
+
+    const handleRegister = async (participant) => {
+        await axios.post(Endpoint, {query: registerParticipant, variables: {participantID: participant.id, eventID: id}}).then(
+            (response) => {
+                alert("Participant Registered");
+                getParticipants();
+            }
+        );
+    }
+
 
     const renderAgeGroups = () => {
         if(ageGroups){
@@ -170,6 +225,9 @@ function EventDetails(){
                                     alert("Participant Registered Successfully");
                                 }
                             })
+                    }
+                    else{
+                        alert("Contestant already exists. Click on add an existing Contestant to add them to the event");
                     }
                 });
         }else{
@@ -313,7 +371,8 @@ function EventDetails(){
                     <div className="tab-pane fade show" id="add-participants">
                         <div className="card">
                             <div className="card-body">
-                                <form className="p-3 border-bottom border-secondary" id="create-participant-form" onSubmit={handleSubmission}>
+                                <form className="p-3 border-bottom border-secondary" id="create-participant-form" >
+                                    <h3 className="mb-3">Create a new participant and register</h3>
                                     <div className="row">
                                         <div className="col-6">
                                             <div className="mb-3">
@@ -380,8 +439,39 @@ function EventDetails(){
                                             </div>
                                         </div>
                                     </div>
-                                    <button type="submit" className="btn btn-primary">Submit</button>
+                                    <div className="d-flex align-items-center">
+                                        <button className="btn btn-primary" onClick={handleSubmission}>Submit</button>
+                                        <button className="btn btn-primary mx-2" onClick={(e)=>{
+                                            e.preventDefault();
+                                            document.getElementById("registered_participants").style.display = "block";
+                                            document.getElementById("create-participant-form").style.display = "none";
+                                        }}>Add an existing contestant</button>
+                                    </div>
                                 </form>
+                                <div id="registered_participants">
+                                    <div className="d-flex mb-3 align-items-center justify-content-between px-3">
+                                        <h3 className="m-0">Registered Participants</h3>
+                                        <button className="btn btn-primary" onClick={() =>{
+                                            document.getElementById("registered_participants").style.display = "none";
+                                            document.getElementById("create-participant-form").style.display = "block";
+                                        }}>Back</button>
+                                    </div>
+                                    <div className="container ">
+                                        <table className="table table-striped border border-secondary">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Participant Name</th>
+                                                <th scope="col">Participant Email</th>
+                                                <th></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {renderAllParticipants()}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

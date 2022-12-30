@@ -7,3 +7,7 @@
 .event_details_navbar li button:hover{
     color: #61dafb;
 }
+
+#registered_participants{
+    display: none;
+}
