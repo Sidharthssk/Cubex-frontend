@@ -60,7 +60,7 @@ function Participants() {
     return (
         <div className="container mx-auto my-5">
             <div className="">
-                <div className="card bg-white">
+                <div className="card ">
                     <div className="card-body p-4 ">
                         <nav className="navbar bg-light">
                             <div className="container-fluid">

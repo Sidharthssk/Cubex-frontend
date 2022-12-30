@@ -5,7 +5,7 @@ import {NavLink} from "react-router-dom";
 function Navbar(){
     return(
         <>
-            <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+            <nav className="navbar navbar-expand-lg navbar-dark bg-dark" style={{position: "sticky", top: "0"}}>
                 <div className="container-fluid">
                     <NavLink activeStyle={{ color:'#5754a8' }} className="navbar-brand" to="/">Cubex</NavLink>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -17,6 +17,9 @@ function Navbar(){
                         <ul className="navbar-nav">
                             <li className="nav-item">
                                 <NavLink activeStyle={{ color:'#5754a8' }} className="nav-link" aria-current="page" exact to="/">Home</NavLink>
+                            </li>
+                            <li className="nav-item">
+                                <NavLink activeStyle={{ color:'#5754a8' }} className="nav-link" aria-current="page" exact to="/events">Events</NavLink>
                             </li>
                             <li className="nav-item">
                                 <NavLink activeStyle={{ color:'#5754a8' }} className="nav-link" to="/createEvent">Create Event</NavLink>

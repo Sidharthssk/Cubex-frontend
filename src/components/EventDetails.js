@@ -189,13 +189,13 @@ function EventDetails(){
     }
 
     return (
-        <div className="p-3">
+        <div className="p-3 mt-5">
             {
                 show && <Modal name={selectedParticipant.current.name} id={selectedParticipant.current.id} func={getParticipants}  show={setShow}/>
             }
             <div className="container mx-auto my-5 border p-3 rounded">
                 <div className="navbar">
-                    <ul className="nav nav-tabs flex">
+                    <ul className="nav nav-tabs flex event_details_navbar">
                         <li className="nav-item">
                             <button className="nav-link active" aria-current="page" data-bs-toggle="tab"
                                     data-bs-target="#event">Event Description
@@ -215,7 +215,7 @@ function EventDetails(){
                         </li>
                     </ul>
                 </div>
-                <div className="tab-content">
+                <div className="tab-content my-2">
                     <div className="tab-pane fade show active" id="event">
                         <div className="card">
                             <div className="card-body">
@@ -406,7 +406,7 @@ function EventDetails(){
                                         <div className="col-6">
                                             <div className="mb-3 fs-4">
                                                 <label htmlFor="score" className="form-label">Score : </label>
-                                                <input type="text" className="form-control" id="score" placeholder="00:00:00" autoComplete="off"/>
+                                                <input type="text" className="form-control" id="score" placeholder="00:00:00 (min:sec:msec)" autoComplete="off"/>
                                             </div>
                                         </div>
                                     </div>

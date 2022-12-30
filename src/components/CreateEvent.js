@@ -52,28 +52,18 @@ function CreateEvent() {
         queryVariables
     ), {
         onSuccess: (data) => {
-            navigate("/")
+            navigate("/events");
         }
     })
 
-
-    //
-    // const mutationFunction = useMutation(async () => {
-    //     return await axios.post(Endpoint, {
-    //         query: mutation,
-    //         variables: queryVariables
-    //     }).then((res) => console.log(res));
-    // });
-
-
     return (
         <>
-            <div className="container my-5 mx-auto p-5 event_details border">
+            <div className="container mx-auto p-5 event_details" style={{marginTop: "5%"}}>
                 <form onSubmit={handleForm}>
                     <div className="relative z-0 mb-5 w-100 input-group">
                         <label htmlFor="event_name" className="d-block " style={{color: "white"}}>Event Name</label>
                         <input type="text" name="event_name" id="event_name" className="d-block py-2 px-0 w-100 fs-5 no-outline" placeholder=" " required
-                               style={{color: "white"}}/>
+                               style={{color: "white"}} autoComplete="off"/>
                     </div>
                     <div className="relative z-0 mb-3 w-100 input-group">
                         <label htmlFor="event_name" className="d-block " style={{color: "white"}}>Event Description</label>

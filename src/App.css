@@ -3,18 +3,16 @@
 }
 
 body{
-  background-color: rgb(49,52,66);
+    background-image: url("./assets/backgroundImage.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
 }
 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
 }
 
 .App-header {
@@ -47,7 +45,7 @@ body{
   border-left-style: hidden;
   border-bottom-style: groove;
   border-bottom-color: white;
-  background-color: rgb(49,52,66);
+    background : transparent;
 }
 
 .event_details textarea{
@@ -59,7 +57,7 @@ body{
     border-left-color: white;
     border-right-color: white;
     border-top-color: white;
-    background-color: rgb(49,52,66);
+    background : transparent;
 }
 
 .no-outline:focus {
@@ -68,4 +66,28 @@ body{
 
 .participant-table tr:hover {
     cursor: pointer;
+}
+
+.videoTag {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: fixed;
+    left: 0;
+}
+
+.event_details_navbar li button{
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.event_details_navbar li button:hover{
+    color: #61dafb;
+}
+
+.event_details{
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 25px;
+    border: 1px solid white;
 }

@@ -7,6 +7,7 @@ import EventDetails from "./components/EventDetails";
 import Participants from "./components/Participants";
 import ParticipantDetails from "./components/ParticipantDetails";
 import Login from "./components/Login";
+import Events from "./components/Events";
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
                     <Route path="/participants" element={<Participants />} />
                     <Route path="/participantdetails/:id" element={<ParticipantDetails />} />
                     <Route path="/login" element={<Login />} />
+                    <Route path="/events" element={<Events />} />
                 </Routes>
             </Querystate>
         </Router>
