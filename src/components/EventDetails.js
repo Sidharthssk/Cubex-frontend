@@ -187,7 +187,6 @@ function EventDetails(){
         );
     }
 
-
     const renderAgeGroups = () => {
         if(ageGroups){
             return ageGroups.map((ageGroup, index) => {
@@ -250,7 +249,7 @@ function EventDetails(){
     return (
         <div className="p-3 mt-5">
             {
-                show && <Modal name={selectedParticipant.current.name} id={selectedParticipant.current.id} func={getParticipants}  show={setShow}/>
+                show && <Modal name={selectedParticipant.current.name} id={selectedParticipant.current.id} func={getParticipants}  scoreboard={getScoreBoard} show={setShow}/>
             }
             <div className="container mx-auto my-5 border p-3 rounded">
                 <div className="navbar">
@@ -356,7 +355,6 @@ function EventDetails(){
                                                                     "name" : participant.name,
                                                                     "id" : participant.id
                                                                 };
-                                                                console.log(selectedParticipant.current)
                                                             }}></button></td>
                                                         </tr>
                                                     )

@@ -21,6 +21,7 @@ function Modal(props){
         await axios.post(Endpoint, {query: removeParticipantQuery, variables: {eventID: id, participantID: participantID}}).then(
             (response) => {
                 props.func();
+                props.scoreboard();
             });
     }
 
@@ -50,8 +51,6 @@ function Modal(props){
                                 () => {
                                     removeParticipant();
                                     props.show(false);
-
-                                    // props.func();
                                 }
                             }>Sure</button>
                         </div>
