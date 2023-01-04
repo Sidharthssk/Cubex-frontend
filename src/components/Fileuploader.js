@@ -1,5 +1,6 @@
 import React, {useEffect} from "react";
 import FileUploader from "../styles/Fileuploader.css";
+import XLSX from "sheetjs-style";
 
 const Fileuploader = () => {
 
@@ -39,22 +40,28 @@ const Fileuploader = () => {
         })
     }, []);
 
+    // read an excel file
     const showFile = (file) => {
         let fileType = file.type;
         let validExtensions = ["application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"];
-
         if(validExtensions.includes(fileType)){
-            console.log("Hi 1");
             let fileReader = new FileReader();
-            fileReader.onload = function (event){
-                event.preventDefault();
-                // console.log(event);
-                console.log("Hello");
+            fileReader.onload = (e) => {
+                let fileData = e.target.result;
+                let workbook = XLSX.read(fileData, {type: "binary"});
+                workbook.SheetNames.forEach(sheet => {
+                    let rowObject = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet]);
+                    let jsonArray = JSON.stringify(rowObject);
+                    console.log(jsonArray);
+                })
             }
+            fileReader.readAsBinaryString(file);
+        } else {
+            alert("This is not an Excel file");
+            // dropArea.classList.remove("active");
+            // dragText.textContent = "Drag and drop to upload file";
         }
-        else{
-            alert("This is not an excel file")
-        }
+
     }
 
 
