@@ -8,6 +8,7 @@ import Participants from "./components/Participants";
 import ParticipantDetails from "./components/ParticipantDetails";
 import Login from "./components/Login";
 import Events from "./components/Events";
+import Fileuploader from "./components/Fileuploader";
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
                     <Route path="/participantdetails/:id" element={<ParticipantDetails />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/events" element={<Events />} />
+                    <Route path="/fileuploader" element={<Fileuploader />} />
                 </Routes>
             </Querystate>
         </Router>
