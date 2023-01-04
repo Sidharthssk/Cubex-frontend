@@ -2,6 +2,7 @@ import React, {useState, useRef, useEffect} from "react";
 import {gql} from "graphql-request";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
+import ExcelExport from "./ExcelExport";
 
 
 const Endpoint = "http://localhost:8000/graphql/";
@@ -17,10 +18,32 @@ const Query = gql`
         }
   }`;
 
+const getAllParticipantsQuery = gql`
+    query participants {
+      getAllParticipants {
+        id
+        name
+        contact
+        email
+        dob
+        city
+        state
+        country
+        events {
+          name
+        }
+        gender
+        ageGroup {
+          name
+        }
+      }
+}`;
+
 function Participants() {
     const [data, setData] = useState(null);
     const keyword = useRef(null);
     const navigate = useNavigate();
+    const excelData = useRef([]);
 
     useEffect(() => {
         getParticipants();
@@ -57,6 +80,36 @@ function Participants() {
         }
     }
 
+    const exportExcel = () => {
+        axios.post(Endpoint, {query: getAllParticipantsQuery}).then(
+            (response) => {
+                // console.log(response.data.data.getAllParticipants);
+                response.data.data.getAllParticipants.map((participant) => {
+                    excelData.current.push(
+                        {
+                            "Form No.": participant.id,
+                            "Name of the Participant": participant.name,
+                            "Contact Details": participant.contact,
+                            "Email": participant.email,
+                            "Date of Birth": participant.dob,
+                            "City": participant.city,
+                            "State": participant.state,
+                            "Country": participant.country,
+                            "Age category": participant.ageGroup.name,
+                            "Events to Participate": participant.events.map((event) => {
+                                return event.name;
+                                }).join(", "),
+                            "Gender": participant.gender
+                        }
+                    )
+
+                });
+                ExcelExport(excelData.current, "Participants");
+                excelData.current = [];
+            }
+        );
+    }
+
     return (
         <div className="container mx-auto my-5">
             <div className="">
@@ -66,6 +119,7 @@ function Participants() {
                             <div className="container-fluid">
                                     <input className="form-control me-2 w-25" id="search" type="search" placeholder="Search"
                                            aria-label="Search" onInput={handleSearch} autoComplete="off"/>
+                                    <button className="btn btn-success" onClick={exportExcel}>Export Excel File</button>
                             </div>
                         </nav>
                         <div className="border border-secondary border-bottom-0 mt-4">
