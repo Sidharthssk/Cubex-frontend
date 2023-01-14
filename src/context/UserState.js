@@ -3,10 +3,12 @@ import {gql} from "graphql-request";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import userContext from "./UserContext";
+import {useNavigate} from "react-router-dom";
 
 const UserState = (props) => {
 
     const [user, setUser] = useState(null);
+    const navigate = useNavigate();
 
     const Endpoint = "http://localhost:8000/graphql/";
     const loginQuery = gql`
@@ -35,14 +37,21 @@ const UserState = (props) => {
                         token: access_token
                     });
                     localStorage.setItem("token", access_token);
+                    navigate("/");
                 }
             }
         );
 
     }
 
+    const logout = () => {
+        setUser(null);
+        localStorage.removeItem('token');
+        navigate("/login");
+    }
+
     return (
-        <userContext.Provider value={{login, user}}>
+        <userContext.Provider value={{login, user, logout}}>
             {props.children}
         </userContext.Provider>
     )

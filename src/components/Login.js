@@ -1,12 +1,10 @@
 import React, {useContext} from "react";
 import "../styles/Login.css";
-import {useNavigate} from "react-router-dom";
 import UserContext from "../context/UserContext";
 
 
 function Login() {
 
-    const navigate = useNavigate();
     const context = useContext(UserContext);
     const {login} = context;
 
@@ -15,7 +13,6 @@ function Login() {
         const email = document.getElementById("email").value;
         const password = document.getElementById("password").value;
         login(email, password);
-        navigate("/");
     }
 
   return (

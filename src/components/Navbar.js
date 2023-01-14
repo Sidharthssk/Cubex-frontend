@@ -1,9 +1,20 @@
-import React from "react";
+import React, {useContext, useEffect} from "react";
 import {Link} from "react-router-dom";
 import {NavLink} from "react-router-dom";
 import "../styles/Navbar.css";
+import UserContext from "../context/UserContext";
 
 function Navbar(){
+
+    const context = useContext(UserContext);
+    const {user, logout} = context;
+
+    useEffect(() => {
+        if(user){
+            console.log(user);
+        }
+    }, [user]);
+
     return(
         <>
             <nav className="navbar main_navbar navbar-expand-lg">
@@ -45,10 +56,8 @@ function Navbar(){
                         {
                             localStorage.getItem('token') ? (
                                 <button className="btn btn-outline-primary" onClick={() => {
-                                    localStorage.removeItem('token');
-                                    window.location.reload();
-                                }
-                                }>Logout</button>
+                                    logout();
+                                }}>Logout</button>
                             ) : (
                                 <Link className="btn btn-outline-primary" to="/login">Login</Link>
                             )
