@@ -15,7 +15,7 @@ const Query = gql`
     startDate
     endDate
   }
-  AgeGroups(eventId: $id) {
+  AgeGroups(filters: {eventID: $id}) {
     minAge
     maxAge
     name
@@ -99,7 +99,7 @@ function EventDetails(){
     }, []);
 
     const getEvent = async () => {
-        const response = await axios.post(Endpoint, {query: Query, variables: {id: id}}).then(
+        const response = await axios.post(Endpoint, {query: Query, variables: {id: id, eventID: id}}).then(
             (response) => {
                 setEvent(response.data.data.event);
                 setAgeGroups(response.data.data.AgeGroups);
