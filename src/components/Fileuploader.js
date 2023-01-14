@@ -51,8 +51,6 @@ const Fileuploader = () => {
                 let workbook = XLSX.read(fileData, {type: "binary"});
                 workbook.SheetNames.forEach(sheet => {
                     let rowObject = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet]);
-                    let jsonArray = JSON.stringify(rowObject);
-                    console.log(jsonArray);
                 })
             }
             fileReader.readAsBinaryString(file);
