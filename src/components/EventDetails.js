@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from "react"
+import React, {useState, useRef, useEffect, useContext} from "react"
 import axios from "axios";
 import {useParams} from "react-router-dom";
 import {gql} from "graphql-request";
@@ -6,6 +6,7 @@ import Table from "./Table";
 import moment from "moment";
 import Modal from "./Modal";
 import "../styles/EventDetails.css";
+import UserContext from "../context/UserContext";
 
 const Query = gql`
     query event($id: ID!) {
@@ -91,6 +92,9 @@ function EventDetails(){
     const keyword = useRef(null);
     const [show, setShow] = useState(false);
     const selectedParticipant = useRef(null);
+
+    const context = useContext(UserContext);
+    const {user} = context;
 
     useEffect(() => {
         getEvent();
@@ -265,9 +269,13 @@ function EventDetails(){
                         <li className="nav-item">
                             <button className="nav-link" data-bs-toggle="tab" data-bs-target="#participants">Participants</button>
                         </li>
-                        <li className="nav-item">
-                            <button className="nav-link" data-bs-toggle="tab" data-bs-target="#add-participants">Add Participants</button>
-                        </li>
+                        {
+                            user.user_role === 1 ? (
+                                <li className="nav-item">
+                                    <button className="nav-link" data-bs-toggle="tab" data-bs-target="#add-participants">Add Participants</button>
+                                </li>
+                            ) : null
+                        }
                         <li className="nav-item">
                             <button className="nav-link" data-bs-toggle="tab" data-bs-target="#add-score">Enter Score</button>
                         </li>
@@ -339,7 +347,11 @@ function EventDetails(){
                                             <tr>
                                                 <th scope="col">#</th>
                                                 <th scope="col">Participant Name</th>
-                                                <th></th>
+                                                {
+                                                    user.user_role === 1 ? (
+                                                        <th></th>
+                                                    ) : null
+                                                }
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -349,13 +361,17 @@ function EventDetails(){
                                                         <tr key={participant.id}>
                                                             <th scope="row">{index+1}</th>
                                                             <td className="text-capitalize w-50">{participant.name}</td>
-                                                            <td><button type="button" className="btn-close"  onClick={() => {
-                                                                setShow(true);
-                                                                selectedParticipant.current = {
-                                                                    "name" : participant.name,
-                                                                    "id" : participant.id
-                                                                };
-                                                            }}></button></td>
+                                                            {
+                                                                user.user_role === 1 ? (
+                                                                    <td><button type="button" className="btn-close"  onClick={() => {
+                                                                        setShow(true);
+                                                                        selectedParticipant.current = {
+                                                                            "name" : participant.name,
+                                                                            "id" : participant.id
+                                                                        };
+                                                                    }}></button></td>
+                                                                ) : null
+                                                            }
                                                         </tr>
                                                     )
                                                 })
@@ -366,113 +382,115 @@ function EventDetails(){
                             </div>
                         </div>
                     </div>
-                    <div className="tab-pane fade show" id="add-participants">
-                        <div className="card">
-                            <div className="card-body">
-                                <form className="p-3 border-bottom border-secondary" id="create-participant-form" >
-                                    <h3 className="mb-3">Create a new participant and register</h3>
-                                    <div className="row">
-                                        <div className="col-6">
-                                            <div className="mb-3">
-                                                <label htmlFor="name" className="form-label">Name</label>
-                                                <input type="text" className="form-control" id="name" placeholder="Name" autoComplete="off"/>
+                    {
+                        user.user_role === 1 ? (<div className="tab-pane fade show" id="add-participants">
+                            <div className="card">
+                                <div className="card-body">
+                                    <form className="p-3 border-bottom border-secondary" id="create-participant-form" >
+                                        <h3 className="mb-3">Create a new participant and register</h3>
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <div className="mb-3">
+                                                    <label htmlFor="name" className="form-label">Name</label>
+                                                    <input type="text" className="form-control" id="name" placeholder="Name" autoComplete="off"/>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div className="col-6">
-                                            <div className="mb-3">
-                                                <label htmlFor="email" className="form-label">Email</label>
-                                                <input type="email" className="form-control" id="email" placeholder="Email" autoComplete="off"/>
+                                            <div className="col-6">
+                                                <div className="mb-3">
+                                                    <label htmlFor="email" className="form-label">Email</label>
+                                                    <input type="email" className="form-control" id="email" placeholder="Email" autoComplete="off"/>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div className="col-6">
-                                            <div className="mb-3">
-                                                <label htmlFor="contact" className="form-label">Contact</label>
-                                                <input type="text" className="form-control" id="contact" placeholder="Contact" autoComplete="off"/>
+                                            <div className="col-6">
+                                                <div className="mb-3">
+                                                    <label htmlFor="contact" className="form-label">Contact</label>
+                                                    <input type="text" className="form-control" id="contact" placeholder="Contact" autoComplete="off"/>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div className="col-6">
-                                            <div className="mb-3">
-                                                <label htmlFor="dob" className="form-label">Date of Birth</label>
-                                                <input type="date" className="form-control" id="dob" placeholder="Date of Birth"/>
+                                            <div className="col-6">
+                                                <div className="mb-3">
+                                                    <label htmlFor="dob" className="form-label">Date of Birth</label>
+                                                    <input type="date" className="form-control" id="dob" placeholder="Date of Birth"/>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div className="col-6">
-                                            <div className="mb-3">
-                                                <label htmlFor="gender" className="form-label">Gender</label>
+                                            <div className="col-6">
+                                                <div className="mb-3">
+                                                    <label htmlFor="gender" className="form-label">Gender</label>
                                                     <select name="gender" id="gender" className="selectVal mx-2">
                                                         <option value="male">Male</option>
                                                         <option value="female">Female</option>
                                                         <option value="other">Other</option>
                                                     </select>
+                                                </div>
+                                                <div className="mb-3">
+                                                    <label htmlFor="ageGroup" className="form-label">Age Group</label>
+                                                    <select name="ageGroup" id="ageGroup" className="selectVal mx-2">
+                                                        {
+                                                            ageGroups?.map(ageGroup => {
+                                                                return (
+                                                                    <option key={ageGroup.id} value={ageGroup.id}>{ageGroup.name}</option>
+                                                                )
+                                                            })
+                                                        }
+                                                    </select>
+                                                </div>
                                             </div>
-                                            <div className="mb-3">
-                                                <label htmlFor="ageGroup" className="form-label">Age Group</label>
-                                                <select name="ageGroup" id="ageGroup" className="selectVal mx-2">
-                                                    {
-                                                        ageGroups?.map(ageGroup => {
-                                                            return (
-                                                                <option key={ageGroup.id} value={ageGroup.id}>{ageGroup.name}</option>
-                                                            )
-                                                        })
-                                                    }
-                                                </select>
+                                            <div className="col-6">
+                                                <div className="mb-3">
+                                                    <label htmlFor="City" className="form-label">City</label>
+                                                    <input type="text" className="form-control" id="city" placeholder="City" autoComplete="off"/>
+                                                </div>
+                                            </div>
+                                            <div className="col-6">
+                                                <div className="mb-3">
+                                                    <label htmlFor="state" className="form-label">State</label>
+                                                    <input type="text" className="form-control" id="state" placeholder="State" autoComplete="off"/>
+                                                </div>
+                                            </div>
+                                            <div className="col-6">
+                                                <div className="mb-3">
+                                                    <label htmlFor="country" className="form-label">Country</label>
+                                                    <input type="text" className="form-control" id="country" placeholder="Country" autoComplete="off"/>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div className="col-6">
-                                            <div className="mb-3">
-                                                <label htmlFor="City" className="form-label">City</label>
-                                                <input type="text" className="form-control" id="city" placeholder="City" autoComplete="off"/>
-                                            </div>
+                                        <div className="d-flex align-items-center">
+                                            <button className="btn btn-primary" onClick={handleSubmission}>Submit</button>
+                                            <button className="btn btn-primary mx-2" onClick={(e)=>{
+                                                e.preventDefault();
+                                                document.getElementById("registered_participants").style.display = "block";
+                                                document.getElementById("create-participant-form").style.display = "none";
+                                            }}>Add an existing contestant</button>
                                         </div>
-                                        <div className="col-6">
-                                            <div className="mb-3">
-                                                <label htmlFor="state" className="form-label">State</label>
-                                                <input type="text" className="form-control" id="state" placeholder="State" autoComplete="off"/>
-                                            </div>
+                                    </form>
+                                    <div id="registered_participants">
+                                        <div className="d-flex mb-3 align-items-center justify-content-between px-3">
+                                            <h3 className="m-0">Registered Participants</h3>
+                                            <button className="btn btn-primary" onClick={() =>{
+                                                document.getElementById("registered_participants").style.display = "none";
+                                                document.getElementById("create-participant-form").style.display = "block";
+                                            }}>Back</button>
                                         </div>
-                                        <div className="col-6">
-                                            <div className="mb-3">
-                                                <label htmlFor="country" className="form-label">Country</label>
-                                                <input type="text" className="form-control" id="country" placeholder="Country" autoComplete="off"/>
-                                            </div>
+                                        <div className="container ">
+                                            <table className="table table-striped border border-secondary">
+                                                <thead>
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Participant Name</th>
+                                                    <th scope="col">Participant Email</th>
+                                                    <th></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {renderAllParticipants()}
+                                                </tbody>
+                                            </table>
                                         </div>
-                                    </div>
-                                    <div className="d-flex align-items-center">
-                                        <button className="btn btn-primary" onClick={handleSubmission}>Submit</button>
-                                        <button className="btn btn-primary mx-2" onClick={(e)=>{
-                                            e.preventDefault();
-                                            document.getElementById("registered_participants").style.display = "block";
-                                            document.getElementById("create-participant-form").style.display = "none";
-                                        }}>Add an existing contestant</button>
-                                    </div>
-                                </form>
-                                <div id="registered_participants">
-                                    <div className="d-flex mb-3 align-items-center justify-content-between px-3">
-                                        <h3 className="m-0">Registered Participants</h3>
-                                        <button className="btn btn-primary" onClick={() =>{
-                                            document.getElementById("registered_participants").style.display = "none";
-                                            document.getElementById("create-participant-form").style.display = "block";
-                                        }}>Back</button>
-                                    </div>
-                                    <div className="container ">
-                                        <table className="table table-striped border border-secondary">
-                                            <thead>
-                                            <tr>
-                                                <th scope="col">#</th>
-                                                <th scope="col">Participant Name</th>
-                                                <th scope="col">Participant Email</th>
-                                                <th></th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            {renderAllParticipants()}
-                                            </tbody>
-                                        </table>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        </div>) : null
+                    }
                     <div className="tab-pane fade show" id="add-score">
                         <div className="card">
                             <div className="card-body">

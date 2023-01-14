@@ -48,17 +48,20 @@ function Navbar(){
                                             <li className="nav-item">
                                                 <NavLink className="nav-link" to="/participants">Participants</NavLink>
                                             </li>
-                                            <li className="nav-item dropdown">
-                                                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
-                                                   role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    Others
-                                                </a>
-                                                <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                                    <li><Link className="dropdown-item" to="/createUser">Create User</Link></li>
-                                                    <li><a className="dropdown-item" href="#">Another action</a></li>
-                                                    <li><a className="dropdown-item" href="#">Something else here</a></li>
-                                                </ul>
-                                            </li>
+                                            {
+                                                user.user_role === 1 ? (
+                                                    <li className="nav-item dropdown">
+                                                        <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                                                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            Others
+                                                        </a>
+                                                        <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                                            <li><Link className="dropdown-item" to="/createUser">Create User</Link></li>
+                                                            <li><a className="dropdown-item" href="#">Another action</a></li>
+                                                            <li><a className="dropdown-item" href="#">Something else here</a></li>
+                                                        </ul>
+                                                    </li>) : null
+                                            }
                                         </ul>
                                     </div>
                                 </div>) : null
