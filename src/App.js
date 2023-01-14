@@ -11,6 +11,7 @@ import Events from "./components/Events";
 import Fileuploader from "./components/Fileuploader";
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import UserState from "./context/UserState";
+import CreateUser from "./components/Createuser";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
                     <Route path="/login" element={<Login />} />
                     <Route path="/events" element={<Events />} />
                     <Route path="/fileuploader" element={<Fileuploader />} />
+                    <Route path="/createUser" element={<CreateUser />} />
                 </Routes>
                 </UserState>
             </Querystate>
