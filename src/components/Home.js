@@ -11,7 +11,7 @@ function Home() {
         if(localStorage.getItem("token") === null){
             navigate("/login");
         }
-    }, []);
+    }, [localStorage.getItem("token")]);
 
   return (
       <video autoPlay loop muted className="videoTag" style={{width: "100%", height: "100%"}}>

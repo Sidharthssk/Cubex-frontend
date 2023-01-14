@@ -44,14 +44,8 @@ const UserState = (props) => {
 
     }
 
-    const logout = () => {
-        setUser(null);
-        localStorage.removeItem('token');
-        navigate("/login");
-    }
-
     return (
-        <userContext.Provider value={{login, user, logout}}>
+        <userContext.Provider value={{login, user, setUser}}>
             {props.children}
         </userContext.Provider>
     )

@@ -1,19 +1,21 @@
-import React, {useContext, useEffect} from "react";
+import React, {useContext} from "react";
 import {Link} from "react-router-dom";
 import {NavLink} from "react-router-dom";
 import "../styles/Navbar.css";
 import UserContext from "../context/UserContext";
+import {useNavigate} from "react-router-dom";
 
 function Navbar(){
 
     const context = useContext(UserContext);
-    const {user, logout} = context;
+    const {user, setUser} = context;
+    const navigate = useNavigate();
 
-    useEffect(() => {
-        if(user){
-            console.log(user);
-        }
-    }, [user]);
+    const logout = () => {
+        setUser(null);
+        localStorage.removeItem("token");
+        navigate("/login");
+    }
 
     return(
         <>
@@ -37,9 +39,12 @@ function Navbar(){
                                             <li className="nav-item">
                                                 <NavLink activeStyle={{ color:'#5754a8' }} className="nav-link" aria-current="page" exact to="/events">Events</NavLink>
                                             </li>
-                                            <li className="nav-item">
-                                                <NavLink activeStyle={{ color:'#5754a8' }} className="nav-link" to="/createEvent">Create Event</NavLink>
-                                            </li>
+                                            {
+                                                user.user_role === 1 ? (
+                                                    <li className="nav-item">
+                                                        <NavLink activeStyle={{ color:'#5754a8' }} className="nav-link" to="/createEvent">Create Event</NavLink>
+                                                    </li>) : null
+                                            }
                                             <li className="nav-item">
                                                 <NavLink className="nav-link" to="/participants">Participants</NavLink>
                                             </li>
