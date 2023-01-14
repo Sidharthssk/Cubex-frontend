@@ -31,15 +31,28 @@ function Navbar(){
                             {/*<li className="nav-item dropdown">*/}
                             {/*    <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"*/}
                             {/*       role="button" data-bs-toggle="dropdown" aria-expanded="false">*/}
-                            {/*        Dropdown link*/}
+                            {/*        Others*/}
                             {/*    </a>*/}
                             {/*    <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">*/}
-                            {/*        <li><a className="dropdown-item" href="#">Action</a></li>*/}
+                            {/*        <li><Link className="dropdown-item" to="/createUser">Create User</Link></li>*/}
                             {/*        <li><a className="dropdown-item" href="#">Another action</a></li>*/}
                             {/*        <li><a className="dropdown-item" href="#">Something else here</a></li>*/}
                             {/*    </ul>*/}
                             {/*</li>*/}
                         </ul>
+                    </div>
+                    <div>
+                        {
+                            localStorage.getItem('token') ? (
+                                <button className="btn btn-outline-primary" onClick={() => {
+                                    localStorage.removeItem('token');
+                                    window.location.reload();
+                                }
+                                }>Logout</button>
+                            ) : (
+                                <Link className="btn btn-outline-primary" to="/login">Login</Link>
+                            )
+                        }
                     </div>
                 </div>
             </nav>
