@@ -10,12 +10,14 @@ import Login from "./components/Login";
 import Events from "./components/Events";
 import Fileuploader from "./components/Fileuploader";
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import UserState from "./context/UserState";
 
 function App() {
   return (
     <>
         <Router>
             <Querystate>
+                <UserState>
                 <Navbar />
                 <Routes>
                     <Route path="/" element={<Home />} />
@@ -27,6 +29,7 @@ function App() {
                     <Route path="/events" element={<Events />} />
                     <Route path="/fileuploader" element={<Fileuploader />} />
                 </Routes>
+                </UserState>
             </Querystate>
         </Router>
 

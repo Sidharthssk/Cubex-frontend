@@ -1,38 +1,30 @@
-import React, {useEffect} from "react";
-import axios from "axios";
-import {Cookies} from "react-cookie";
-import {gql} from "graphql-request";
+import React, {useContext} from "react";
+import "../styles/Login.css";
+import {useNavigate} from "react-router-dom";
+import UserContext from "../context/UserContext";
 
-const Endpoint = "http://localhost:8000/graphql/";
-const loginQuery = gql`
-    mutation login($email: String!, $password: String!) {
-          login(email: $email, password: $password) {
-                id
-          }
-}`;
 
 function Login() {
-    const cookies = new Cookies();
-    const login = async () => {
-        const email = "admin@gmail.com";
-        const password = "admin1";
-        const response = await axios.post(Endpoint, {query: loginQuery, variables: {email: email, password: password}}).then(
-            (response) => {
-                // cookies.set("token", response.data.data.login.id, {path: "/"});
-                // window.location.href = "/";
-                console.log(cookies.get("JWT_REFRESH_TOKEN"));
-            }
-        );
+
+    const navigate = useNavigate();
+    const context = useContext(UserContext);
+    const {login} = context;
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        login(email, password);
+        navigate("/");
     }
 
-    useEffect(() => {
-        login();
-    }, []);
-
   return (
-    <div>
-      <h1>Login</h1>
-    </div>
+    <form className="container px-5 py-3 login d-flex flex-column position-absolute top-50 start-50 translate-middle"
+        onSubmit={handleSubmit}>
+        <input type="text" placeholder="Email" className="my-4" id="email" />
+        <input type="password" placeholder="Password" className="my-3" id="password" />
+        <button className="btn btn-primary my-3" type="submit">Login</button>
+    </form>
   );
 }
 

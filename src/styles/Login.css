@@ -1,0 +1,23 @@
+.login{
+    width: 30%;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.login input{
+    color: white;
+    border-top-style: hidden;
+    border-right-style: hidden;
+    border-left-style: hidden;
+    border-bottom-style: groove;
+    border-bottom-color: rgba(255, 255, 255, 0.5);
+    background : transparent;
+}
+
+.login input:focus{
+    outline: none;
+    border-bottom-color: white;
+}
+
+.login button{
+    width: 40%;
+}
