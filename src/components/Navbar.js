@@ -57,7 +57,7 @@ function Navbar(){
                                                         </a>
                                                         <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                                             <li><Link className="dropdown-item" to="/createUser">Create User</Link></li>
-                                                            <li><a className="dropdown-item" href="#">Another action</a></li>
+                                                            <li><Link className="dropdown-item" to="/fileuploader">File Upload</Link></li>
                                                             <li><a className="dropdown-item" href="#">Something else here</a></li>
                                                         </ul>
                                                     </li>) : null

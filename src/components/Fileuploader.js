@@ -1,6 +1,29 @@
 import React, {useEffect} from "react";
 import FileUploader from "../styles/Fileuploader.css";
 import XLSX from "sheetjs-style";
+import {gql} from "graphql-request";
+import axios from "axios";
+
+
+const ENDPOINT = "http://localhost:8000/graphql/";
+
+const EVENTS = gql`
+    query events{
+        events{
+            name
+            id
+        }
+    }`;
+
+const CREATE_EVENT = gql`
+    mutation createEvent($name: String!){
+        createEvent(name: $name){
+            name
+        }
+    }
+`;
+
+
 
 const Fileuploader = () => {
 
@@ -40,7 +63,32 @@ const Fileuploader = () => {
         })
     }, []);
 
-    // read an excel file
+    const decode_data = (rowData) => {
+        const events = rowData['Events to participate. (₹ 250 each)'].split(", ");
+        const age_category = rowData['Age Category.']
+        // console.log(age_category);
+        axios.post(ENDPOINT, {
+            query: EVENTS
+        }).then(
+            (response) => {
+                const existing_events = response.data.data.events;
+                events.map((event) => {
+                    if(!existing_events.includes(event)){
+                        axios.post(ENDPOINT, {
+                            query: CREATE_EVENT,
+                            variables: {
+                                name: event
+                            }
+                        }).then(
+
+                        )
+                    }
+                });
+            }
+        )
+    }
+
+
     const showFile = (file) => {
         let fileType = file.type;
         let validExtensions = ["application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"];
@@ -51,6 +99,8 @@ const Fileuploader = () => {
                 let workbook = XLSX.read(fileData, {type: "binary"});
                 workbook.SheetNames.forEach(sheet => {
                     let rowObject = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet]);
+                    console.log(rowObject);
+                    decode_data(rowObject[0]);
                 })
             }
             fileReader.readAsBinaryString(file);
