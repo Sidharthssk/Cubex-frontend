@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, {useContext, useEffect} from "react";
 import {Link} from "react-router-dom";
 import {NavLink} from "react-router-dom";
 import "../styles/Navbar.css";
@@ -8,8 +8,14 @@ import {useNavigate} from "react-router-dom";
 function Navbar(){
 
     const context = useContext(UserContext);
-    const {user, setUser} = context;
+    const {user, setUser, getUserData} = context;
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if(localStorage.getItem("token")){
+            getUserData();
+        }
+    }, [])
 
     const logout = () => {
         setUser(null);

@@ -44,8 +44,19 @@ const UserState = (props) => {
 
     }
 
+    const getUserData = () => {
+        let token = localStorage.getItem("token");
+        const decoded = jwt_decode(token)
+        setUser({
+            user_id: decoded.user_id,
+            user_role: decoded.user_role,
+            token: token
+        })
+
+    }
+
     return (
-        <userContext.Provider value={{login, user, setUser}}>
+        <userContext.Provider value={{login, user, setUser, getUserData}}>
             {props.children}
         </userContext.Provider>
     )
