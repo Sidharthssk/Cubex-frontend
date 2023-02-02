@@ -3,13 +3,12 @@ import {gql} from "graphql-request";
 import axios from "axios";
 import {useParams, useNavigate} from "react-router-dom";
 import "../styles/Modal.css";
+import {Config} from "../config";
+import {REMOVE_PARTICIPANT} from "../Graphql/mutation";
 
-const removeParticipantQuery = gql`
-    mutation removeParticipantFromCategory($eventID: ID!, $participantID: ID!){
-        removeParticipantFromCategory(eventID: $eventID, participantID: $participantID)
-    }
-`;
-const Endpoint = "http://localhost:8000/graphql/";
+
+const removeParticipantQuery = REMOVE_PARTICIPANT;
+const Endpoint = Config.graphqlUrl;
 
 function Modal(props){
 

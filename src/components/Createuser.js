@@ -1,25 +1,16 @@
 import React from 'react';
 import {gql} from "graphql-request";
 import axios from "axios";
+import {Config} from "../config";
+import {CREATE_SCORE_ENTERER, CREATE_ADMIN_MUTATION} from "../Graphql/mutation";
 
-const ENDPOINT = "http://localhost:8000/graphql/";
 
-const SCORE_ENTERER = gql`
-    mutation createScoreEnterer($email: String!, $password: String!, $username: String!) {
-      createScoreEnterer(email: $email, password: $password, username: $username) {
-            email
-      }
-}`;
+const ENDPOINT = Config.graphqlUrl;
+const SCORE_ENTERER = CREATE_SCORE_ENTERER;
+const CREATE_ADMIN = CREATE_ADMIN_MUTATION;
 
-const CREATE_ADMIN = gql`
-    mutation createAdmin($email: String!, $password: String!, $username: String!) {
-        createAdmin(email: $email, password: $password, username: $username) {
-            email
-        }
-}`;
 
 export default function CreateUser() {
-
 
     const handleSubmit = (e) => {
         e.preventDefault();

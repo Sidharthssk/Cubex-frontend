@@ -1,29 +1,19 @@
 import React, {useState} from 'react';
 import {gql, request} from "graphql-request";
 import {useMutation} from "react-query";
-import axios from "axios";
 import {DatePicker} from "antd";
 import moment from "moment";
 import {useNavigate} from "react-router-dom";
 import "../styles/CreateEvent.css";
+import {Config} from "../config";
+import {CREATE_EVENT} from "../Graphql/mutation";
 const {RangePicker: DateRangePicker} = DatePicker;
 
 
-const Endpoint ="http://localhost:8000/graphql/";
-const mutation = gql`
-mutation CreateEvent($name: String!, $description: String!, $startDate: String!, $endDate: String!) {
-  createEvent(
-    name: $name
-    description: $description
-    startDate: $startDate
-    endDate: $endDate
-  ) {
-    name
-    description
-    startDate
-    endDate
-  }
-}`;
+const Endpoint =Config.graphqlUrl;
+
+const mutation = CREATE_EVENT;
+
 function CreateEvent() {
 
     const [date, setDate] = useState([]);

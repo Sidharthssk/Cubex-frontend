@@ -3,41 +3,16 @@ import {gql} from "graphql-request";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import ExcelExport from "./ExcelExport";
+import {Config} from "../config";
+import {PARTICIPANTS_WITH_KEYWORD} from "../Graphql/mutation";
+import {DETAILED_PARTICIPANTS} from "../Graphql/queries";
 
 
-const Endpoint = "http://localhost:8000/graphql/";
-const Query = gql`
-    query participants($keyword: String){
-        participants(keyword: $keyword){
-            participants {
-              name
-              id
-              contact
-              email
-            }
-        }
-  }`;
+const Endpoint = Config.graphqlUrl;
 
-const getAllParticipantsQuery = gql`
-    query participants {
-      getAllParticipants {
-        id
-        name
-        contact
-        email
-        dob
-        city
-        state
-        country
-        events {
-          name
-        }
-        gender
-        ageGroup {
-          name
-        }
-      }
-}`;
+const Query = PARTICIPANTS_WITH_KEYWORD;
+
+const getAllParticipantsQuery = DETAILED_PARTICIPANTS;
 
 function Participants() {
     const [data, setData] = useState(null);

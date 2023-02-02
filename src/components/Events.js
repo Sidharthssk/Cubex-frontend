@@ -3,19 +3,11 @@ import {request, gql} from "graphql-request";
 import {useQuery} from "react-query";
 import Card from "./Card";
 import "../styles/Events.css";
+import {Config} from "../config";
+import {EVENTS} from "../Graphql/queries";
 
-const Endpoint ="http://localhost:8000/graphql/";
-const Query = gql`
-    query{
-        events{
-            name
-            description
-            id
-            startDate
-            endDate
-            }
-        }
-    `;
+const Endpoint = Config.graphqlUrl;
+const Query = EVENTS;
 
 function Events() {
 

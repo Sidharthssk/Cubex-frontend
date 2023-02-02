@@ -4,23 +4,17 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 import userContext from "./UserContext";
 import {useNavigate} from "react-router-dom";
+import {Config} from "../config";
+import {LOGIN_QUERY} from "../Graphql/mutation";
 
 const UserState = (props) => {
 
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
 
-    const Endpoint = "http://localhost:8000/graphql/";
-    const loginQuery = gql`
-    mutation login($email: String!, $password: String!) {
-          login(email: $email, password: $password) {
-                id
-                email
-                token{
-                    access
-                }
-          }
-    }`;
+    const Endpoint = Config.graphqlUrl;
+
+    const loginQuery = LOGIN_QUERY;
 
     const login = async (email, password) => {
         await axios.post(Endpoint, {query: loginQuery, variables: {email: email, password: password}}).then(

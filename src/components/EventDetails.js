@@ -7,78 +7,18 @@ import moment from "moment";
 import Modal from "./Modal";
 import "../styles/EventDetails.css";
 import UserContext from "../context/UserContext";
+import {Config} from "../config";
+import {EVENT_DETAILS, SCORE_BOARD, PARTICIPANTS, ALL_PARTICIPANTS} from "../Graphql/queries";
+import {CREATE_PARTICIPANT, REGISTER_PARTICIPANT, RECORD_SCORE} from "../Graphql/mutation";
 
-const Query = gql`
-    query event($id: ID!) {
-  event(id: $id) {
-    name
-    description
-    startDate
-    endDate
-  }
-  AgeGroups(filters: {eventID: $id}) {
-    minAge
-    maxAge
-    name
-    id
-  }
-}`;
-
-const Endpoint = "http://localhost:8000/graphql/";
-
-const scoreBoardQuery = gql`
-    query scoreboard($ageGroupID: ID!, $eventID: ID!, $keyword: String){
-    scoreboard(ageGroupID: $ageGroupID, eventID: $eventID, keyword: $keyword){
-        scores {
-          duration
-          participant {
-            name
-          }
-          rank
-        }
-    }
-}`;
-
-const participantsQuery = gql`
-    query participants($eventID: ID){
-        participants(filters: {eventID: $eventID}){
-            participants{
-                name
-                id
-            }
-        }
-    }`;
-
-const AllParticipantsQuery = gql`
-    query participants{
-        participants{
-            participants {
-              name
-              id
-              contact
-              email
-            }
-        }
-  }`;
-
-const createParticipant = gql`
-    mutation createParticipant($name: String!, $phone: String!, $email: String!, $gender: String!, $dob: String!, $city: String!, $state: String!, $country: String!, $ageGroupID: ID!){
-        createParticipant(name: $name, phone: $phone, email: $email, gender: $gender, dob: $dob, city: $city, state: $state, country: $country, ageGroup: $ageGroupID){
-            id
-        }
-    }`;
-
-const registerParticipant = gql`
-    mutation registerParticipantForCategory($participantID: ID!, $eventID: ID!){
-        registerParticipantForCategory(participantID: $participantID, eventID: $eventID)
-    }`;
-
-const recordScore = gql`
-    mutation recordScore($participantID: ID!, $eventID: ID!, $duration: String!){
-        recordScore(scoreboard: {participantID: $participantID, eventID: $eventID, duration: $duration}){
-            id
-        }
-    }`;
+const Query = EVENT_DETAILS;
+const Endpoint = Config.graphqlUrl;
+const scoreBoardQuery = SCORE_BOARD;
+const participantsQuery = PARTICIPANTS;
+const AllParticipantsQuery = ALL_PARTICIPANTS;
+const createParticipant = CREATE_PARTICIPANT;
+const registerParticipant = REGISTER_PARTICIPANT;
+const recordScore = RECORD_SCORE;
 
 function EventDetails(){
     const {id} = useParams();

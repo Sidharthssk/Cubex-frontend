@@ -3,9 +3,10 @@ import FileUploader from "../styles/Fileuploader.css";
 import XLSX from "sheetjs-style";
 import {gql} from "graphql-request";
 import axios from "axios";
+import {Config} from "../config";
 
 
-const ENDPOINT = "http://localhost:8000/graphql/";
+const ENDPOINT = Config.graphqlUrl;
 
 const EVENTS = gql`
     query events{
@@ -19,11 +20,18 @@ const CREATE_EVENT = gql`
     mutation createEvent($name: String!){
         createEvent(name: $name){
             name
+            id
         }
     }
 `;
 
-
+const REGISTER_AGE_CATEGORY = gql`
+    mutation register_age_group($name: String!, $eventID: ID!) {
+      registerAgeGroup(name: $name, eventID: $eventID) {
+            name
+      }
+}
+`
 
 const Fileuploader = () => {
 
@@ -65,27 +73,37 @@ const Fileuploader = () => {
 
     const decode_data = (rowData) => {
         const events = rowData['Events to participate. (₹ 250 each)'].split(", ");
-        const age_category = rowData['Age Category.']
-        // console.log(age_category);
-        axios.post(ENDPOINT, {
-            query: EVENTS
-        }).then(
-            (response) => {
-                const existing_events = response.data.data.events;
-                events.map((event) => {
-                    if(!existing_events.includes(event)){
-                        axios.post(ENDPOINT, {
-                            query: CREATE_EVENT,
-                            variables: {
-                                name: event
-                            }
-                        }).then(
-
-                        )
-                    }
-                });
-            }
-        )
+        const age_category = rowData['Age Category.'];
+        const name = rowData['Name of the Participant.']
+        console.log(name);
+        // axios.post(ENDPOINT, {
+        //     query: EVENTS
+        // }).then(
+        //     (response) => {
+        //         const existing_events = response.data.data.events;
+        //         events.map((event) => {
+        //             if(!existing_events.includes(event)){
+        //                 axios.post(ENDPOINT, {
+        //                     query: CREATE_EVENT,
+        //                     variables: {
+        //                         name: event
+        //                     }
+        //                 }).then(
+        //                     (response) => {
+        //                         const event_id = response.data.data.createEvent.id;
+        //                         axios.post(ENDPOINT, {
+        //                             query: REGISTER_AGE_CATEGORY,
+        //                             variables: {
+        //                                 name: age_category,
+        //                                 eventID: event_id
+        //                             }
+        //                         })
+        //                     }
+        //                 )
+        //             }
+        //         });
+        //     }
+        // )
     }
 
 

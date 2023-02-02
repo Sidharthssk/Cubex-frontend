@@ -3,25 +3,12 @@ import {gql} from "graphql-request";
 import axios from "axios";
 import {useParams, Link} from "react-router-dom";
 import moment from "moment";
+import {Config} from "../config";
+import {PARTICIPANT} from "../Graphql/queries";
 
-const Endpoint = "http://localhost:8000/graphql/";
-const participantQuery = gql`
-    query participant($id: ID!){
-    participant(id: $id){
-        name
-        dob
-        contact
-        email
-        gender
-        ageGroup {
-          name
-        }
-        events {
-          name
-          id
-        }
-    }
-}`;
+
+const Endpoint = Config.graphqlUrl;
+const participantQuery = PARTICIPANT;
 
 
 function ParticipantDetails() {
