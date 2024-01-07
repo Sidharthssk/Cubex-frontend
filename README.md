@@ -1,6 +1,7 @@
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The backend of the project is available at [Cubex Backend](https://github.com/Sidharthssk/Cubex-backend)
 
 ## Available Scripts
 
